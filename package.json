@@ -1,8 +1,8 @@
 {
-  "name": "api-design-v3",
+  "name": "the-dalal-backstreet",
   "version": "1.0.0",
   "main": "index.js",
-  "author": "Scott Moss <willscottmoss@gmail.com>",
+  "author": "Manoj Kumar Desai <manojkumardbe@gmail.com>",
   "license": "MIT",
   "type": "module",
   "scripts": {
