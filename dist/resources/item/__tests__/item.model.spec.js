@@ -1,9 +1,15 @@
-import { Item } from '../item.model';
-import mongoose from 'mongoose';
+"use strict";
+
+var _item = require("../item.model");
+
+var _mongoose = _interopRequireDefault(require("mongoose"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 describe('Item model', () => {
   describe('schema', () => {
     test('name', () => {
-      const name = Item.schema.obj.name;
+      const name = _item.Item.schema.obj.name;
       expect(name).toEqual({
         type: String,
         required: true,
@@ -12,7 +18,7 @@ describe('Item model', () => {
       });
     });
     test('status', () => {
-      const status = Item.schema.obj.status;
+      const status = _item.Item.schema.obj.status;
       expect(status).toEqual({
         type: String,
         required: true,
@@ -21,25 +27,25 @@ describe('Item model', () => {
       });
     });
     test('notes', () => {
-      const notes = Item.schema.obj.notes;
+      const notes = _item.Item.schema.obj.notes;
       expect(notes).toEqual(String);
     });
     test('due', () => {
-      const due = Item.schema.obj.due;
+      const due = _item.Item.schema.obj.due;
       expect(due).toEqual(Date);
     });
     test('createdBy', () => {
-      const createdBy = Item.schema.obj.createdBy;
+      const createdBy = _item.Item.schema.obj.createdBy;
       expect(createdBy).toEqual({
-        type: mongoose.SchemaTypes.ObjectId,
+        type: _mongoose.default.SchemaTypes.ObjectId,
         ref: 'user',
         required: true
       });
     });
     test('list', () => {
-      const list = Item.schema.obj.list;
+      const list = _item.Item.schema.obj.list;
       expect(list).toEqual({
-        type: mongoose.SchemaTypes.ObjectId,
+        type: _mongoose.default.SchemaTypes.ObjectId,
         ref: 'list',
         required: true
       });

@@ -1,26 +1,39 @@
-import { newToken, verifyToken, signup, signin, protect } from '../auth';
-import mongoose from 'mongoose';
-import jwt from 'jsonwebtoken';
-import config from '../../config';
-import { User } from '../../resources/user/user.model';
+"use strict";
+
+var _auth = require("../auth");
+
+var _mongoose = _interopRequireDefault(require("mongoose"));
+
+var _jsonwebtoken = _interopRequireDefault(require("jsonwebtoken"));
+
+var _config = _interopRequireDefault(require("../../config"));
+
+var _user = require("../../resources/user/user.model");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 describe('Authentication:', () => {
   describe('newToken', () => {
     test('creates new jwt from user', () => {
       const id = 123;
-      const token = newToken({
+      const token = (0, _auth.newToken)({
         id
       });
-      const user = jwt.verify(token, config.secrets.jwt);
+
+      const user = _jsonwebtoken.default.verify(token, _config.default.secrets.jwt);
+
       expect(user.id).toBe(id);
     });
   });
   describe('verifyToken', () => {
     test('validates jwt and returns payload', async () => {
       const id = 1234;
-      const token = jwt.sign({
+
+      const token = _jsonwebtoken.default.sign({
         id
-      }, config.secrets.jwt);
-      const user = await verifyToken(token);
+      }, _config.default.secrets.jwt);
+
+      const user = await (0, _auth.verifyToken)(token);
       expect(user.id).toBe(id);
     });
   });
@@ -41,7 +54,7 @@ describe('Authentication:', () => {
         }
 
       };
-      await signup(req, res);
+      await (0, _auth.signup)(req, res);
     });
     test('creates user and and sends new token from user', async () => {
       expect.assertions(2);
@@ -58,13 +71,13 @@ describe('Authentication:', () => {
         },
 
         async send(result) {
-          let user = await verifyToken(result.token);
-          user = await User.findById(user.id).lean().exec();
+          let user = await (0, _auth.verifyToken)(result.token);
+          user = await _user.User.findById(user.id).lean().exec();
           expect(user.email).toBe('hello@hello.com');
         }
 
       };
-      await signup(req, res);
+      await (0, _auth.signup)(req, res);
     });
   });
   describe('signin', () => {
@@ -84,7 +97,7 @@ describe('Authentication:', () => {
         }
 
       };
-      await signin(req, res);
+      await (0, _auth.signin)(req, res);
     });
     test('user must be real', async () => {
       expect.assertions(2);
@@ -105,11 +118,11 @@ describe('Authentication:', () => {
         }
 
       };
-      await signin(req, res);
+      await (0, _auth.signin)(req, res);
     });
     test('passwords must match', async () => {
       expect.assertions(2);
-      await User.create({
+      await _user.User.create({
         email: 'hello@me.com',
         password: 'yoyoyo'
       });
@@ -130,7 +143,7 @@ describe('Authentication:', () => {
         }
 
       };
-      await signin(req, res);
+      await (0, _auth.signin)(req, res);
     });
     test('creates new token', async () => {
       expect.assertions(2);
@@ -138,7 +151,7 @@ describe('Authentication:', () => {
         email: 'hello@me.com',
         password: 'yoyoyo'
       };
-      const savedUser = await User.create(fields);
+      const savedUser = await _user.User.create(fields);
       const req = {
         body: fields
       };
@@ -149,13 +162,13 @@ describe('Authentication:', () => {
         },
 
         async send(result) {
-          let user = await verifyToken(result.token);
-          user = await User.findById(user.id).lean().exec();
+          let user = await (0, _auth.verifyToken)(result.token);
+          user = await _user.User.findById(user.id).lean().exec();
           expect(user._id.toString()).toBe(savedUser._id.toString());
         }
 
       };
-      await signin(req, res);
+      await (0, _auth.signin)(req, res);
     });
   });
   describe('protect', () => {
@@ -175,13 +188,13 @@ describe('Authentication:', () => {
         }
 
       };
-      await protect(req, res);
+      await (0, _auth.protect)(req, res);
     });
     test('token must have correct prefix', async () => {
       expect.assertions(2);
       let req = {
         headers: {
-          authorization: newToken({
+          authorization: (0, _auth.newToken)({
             id: '123sfkj'
           })
         }
@@ -197,11 +210,11 @@ describe('Authentication:', () => {
         }
 
       };
-      await protect(req, res);
+      await (0, _auth.protect)(req, res);
     });
     test('must be a real user', async () => {
-      const token = `Bearer ${newToken({
-        id: mongoose.Types.ObjectId()
+      const token = `Bearer ${(0, _auth.newToken)({
+        id: _mongoose.default.Types.ObjectId()
       })}`;
       const req = {
         headers: {
@@ -219,14 +232,14 @@ describe('Authentication:', () => {
         }
 
       };
-      await protect(req, res);
+      await (0, _auth.protect)(req, res);
     });
     test('finds user form token and passes on', async () => {
-      const user = await User.create({
+      const user = await _user.User.create({
         email: 'hello@hello.com',
         password: '1234'
       });
-      const token = `Bearer ${newToken(user)}`;
+      const token = `Bearer ${(0, _auth.newToken)(user)}`;
       const req = {
         headers: {
           authorization: token
@@ -235,7 +248,7 @@ describe('Authentication:', () => {
 
       const next = () => {};
 
-      await protect(req, {}, next);
+      await (0, _auth.protect)(req, {}, next);
       expect(req.user._id.toString()).toBe(user._id.toString());
       expect(req.user).not.toHaveProperty('password');
     });

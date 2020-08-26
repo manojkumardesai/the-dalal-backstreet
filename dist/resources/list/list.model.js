@@ -1,5 +1,15 @@
-import mongoose from 'mongoose';
-const listSchema = new mongoose.Schema({
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.List = void 0;
+
+var _mongoose = _interopRequireDefault(require("mongoose"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+const listSchema = new _mongoose.default.Schema({
   name: {
     type: String,
     required: true,
@@ -8,7 +18,7 @@ const listSchema = new mongoose.Schema({
   },
   description: String,
   createdBy: {
-    type: mongoose.SchemaTypes.ObjectId,
+    type: _mongoose.default.SchemaTypes.ObjectId,
     ref: 'user',
     required: true
   }
@@ -21,4 +31,7 @@ listSchema.index({
 }, {
   unique: true
 });
-export const List = mongoose.model('list', listSchema);
+
+const List = _mongoose.default.model('list', listSchema);
+
+exports.List = List;
