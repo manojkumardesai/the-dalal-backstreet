@@ -62,7 +62,7 @@ export const signin = async (req, res) => {
 
 export const protect = async (req, res, next) => {
   const bearer = req.headers.authorization
-
+  console.log(req.headers);
   if (!bearer || !bearer.startsWith('Bearer ')) {
     return res.status(401).end()
   }
