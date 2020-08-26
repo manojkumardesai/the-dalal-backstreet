@@ -1,4 +1,12 @@
-import { merge } from 'lodash';
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _lodash = require("lodash");
+
 const env = process.env.NODE_ENV || 'development';
 const baseConfig = {
   env,
@@ -27,4 +35,6 @@ switch (env) {
     envConfig = require('./dev').config;
 }
 
-export default merge(baseConfig, envConfig);
+var _default = (0, _lodash.merge)(baseConfig, envConfig);
+
+exports.default = _default;

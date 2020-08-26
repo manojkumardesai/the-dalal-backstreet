@@ -1,12 +1,23 @@
-import { User } from './user.model';
-export const me = (req, res) => {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.updateMe = exports.me = void 0;
+
+var _user = require("./user.model");
+
+const me = (req, res) => {
   res.status(200).json({
     data: req.user
   });
 };
-export const updateMe = async (req, res) => {
+
+exports.me = me;
+
+const updateMe = async (req, res) => {
   try {
-    const user = await User.findByIdAndUpdate(req.user._id, req.body, {
+    const user = await _user.User.findByIdAndUpdate(req.user._id, req.body, {
       new: true
     }).lean().exec();
     res.status(200).json({
@@ -17,3 +28,5 @@ export const updateMe = async (req, res) => {
     res.status(400).end();
   }
 };
+
+exports.updateMe = updateMe;

@@ -1,4 +1,9 @@
-import router from '../item.router';
+"use strict";
+
+var _item = _interopRequireDefault(require("../item.router"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 describe('item router', () => {
   test('has crud routes', () => {
     const routes = [{
@@ -18,7 +23,8 @@ describe('item router', () => {
       method: 'post'
     }];
     routes.forEach(route => {
-      const match = router.stack.find(s => s.route.path === route.path && s.route.methods[route.method]);
+      const match = _item.default.stack.find(s => s.route.path === route.path && s.route.methods[route.method]);
+
       expect(match).toBeTruthy();
     });
   });

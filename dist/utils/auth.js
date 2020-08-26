@@ -1,21 +1,47 @@
-import config from '../config';
-import { User } from '../resources/user/user.model';
-import jwt from 'jsonwebtoken';
-export const newToken = user => {
-  return jwt.sign({
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.protect = exports.signin = exports.signup = exports.verifyToken = exports.newToken = void 0;
+
+var _config = _interopRequireDefault(require("../config"));
+
+var _user = require("../resources/user/user.model");
+
+var _jsonwebtoken = _interopRequireDefault(require("jsonwebtoken"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+const newToken = user => {
+  return _jsonwebtoken.default.sign({
     id: user.id
-  }, config.secrets.jwt, {
-    expiresIn: config.secrets.jwtExp
+  }, _config.default.secrets.jwt, {
+    expiresIn: _config.default.secrets.jwtExp
   });
 };
-export const verifyToken = token => new Promise((resolve, reject) => {
-  jwt.verify(token, config.secrets.jwt, (err, payload) => {
+
+exports.newToken = newToken;
+
+const verifyToken = token => new Promise((resolve, reject) => {
+  _jsonwebtoken.default.verify(token, _config.default.secrets.jwt, (err, payload) => {
     if (err) return reject(err);
     resolve(payload);
   });
 });
-export const signup = async (req, res) => {};
-export const signin = async (req, res) => {};
-export const protect = async (req, res, next) => {
+
+exports.verifyToken = verifyToken;
+
+const signup = async (req, res) => {};
+
+exports.signup = signup;
+
+const signin = async (req, res) => {};
+
+exports.signin = signin;
+
+const protect = async (req, res, next) => {
   next();
 };
+
+exports.protect = protect;
