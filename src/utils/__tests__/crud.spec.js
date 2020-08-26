@@ -96,6 +96,7 @@ describe('crud controllers', () => {
   describe('createOne', () => {
     test('creates a new doc', async () => {
       expect.assertions(2)
+
       const user = mongoose.Types.ObjectId()
       const body = { name: 'name' }
 
@@ -119,6 +120,7 @@ describe('crud controllers', () => {
 
     test('createdBy should be the authenticated user', async () => {
       expect.assertions(2)
+
       const user = mongoose.Types.ObjectId()
       const body = { name: 'name' }
 
