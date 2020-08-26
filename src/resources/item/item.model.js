@@ -2,20 +2,18 @@ import mongoose from 'mongoose'
 
 const itemSchema = new mongoose.Schema(
   {
-    name: {
-      type: String,
+    qty: {
+      type: Number,
       required: true,
-      trim: true,
-      maxlength: 50
     },
-    status: {
-      type: String,
+    avgPrice: {
+      type: Number,
       required: true,
-      enum: ['active', 'complete', 'pastdue'],
-      default: 'active'
     },
-    notes: String,
-    due: Date,
+    currentPrice: {
+      type: Number,
+      required: true,
+    },
     createdBy: {
       type: mongoose.SchemaTypes.ObjectId,
       ref: 'user',
