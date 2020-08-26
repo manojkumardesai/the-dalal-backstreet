@@ -9,28 +9,24 @@ const userSchema = new mongoose.Schema(
       unique: true,
       trim: true
     },
-
+    firstName: {
+      type: String,
+      required: true,
+      trim: true
+    },
+    lastName: {
+      type: String,
+      required: true,
+      trim: true
+    },
     password: {
       type: String,
       required: true
     },
-    settings: {
-      theme: {
-        type: String,
-        required: true,
-        default: 'dark'
-      },
-      notifications: {
-        type: Boolean,
-        required: true,
-        default: true
-      },
-      compactMode: {
-        type: Boolean,
-        required: true,
-        default: false
-      }
-    }
+    worth: {
+      type: Number,
+      required: true
+    },
   },
   { timestamps: true }
 )
@@ -62,5 +58,7 @@ userSchema.methods.checkPassword = function(password) {
     })
   })
 }
+
+userSchema.index({ email: 1 }, { unique: true })
 
 export const User = mongoose.model('user', userSchema)

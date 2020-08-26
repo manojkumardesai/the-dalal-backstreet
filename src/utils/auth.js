@@ -26,7 +26,8 @@ export const signup = async (req, res) => {
     const token = newToken(user)
     return res.status(201).send({ token })
   } catch (e) {
-    return res.status(500).end()
+    console.log('err:', e);
+    return res.status(500).send({error: 'duplicate email', e})
   }
 }
 
