@@ -6,6 +6,9 @@
   "license": "MIT",
   "scripts": {
     "build": "babel src --out-dir dist",
+    "build-fe": "cd client && npm run build",
+    "install-client": "cd client && npm install",
+    "heroku-postbuild": "npm run install-client && npm run build-fe && npm run build",
     "test": "cross-env NODE_ENV=testing jest --forceExit --detectOpenHandles  --silent",
     "test-routes": "yarn test -t router",
     "test-models": "yarn test -t model",
