@@ -2,13 +2,26 @@ import mongoose from 'mongoose'
 
 const listSchema = new mongoose.Schema(
   {
-    name: {
+    stockSymbol: {
       type: String,
       required: true,
       trim: true,
-      maxlength: 50
     },
-    description: String,
+    stockName: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    cmp: {
+      type: Number,
+      required: true,
+    },
+    qtyAvailable: {
+      type: Number,
+      required: true,
+    },
+    yearHigh: Number,
+    yearLow: Number,
     createdBy: {
       type: mongoose.SchemaTypes.ObjectId,
       ref: 'user',
@@ -18,6 +31,6 @@ const listSchema = new mongoose.Schema(
   { timestamps: true }
 )
 
-listSchema.index({ user: 1, name: 1 }, { unique: true })
+listSchema.index({ stockSymbol: 1 }, { unique: true })
 
 export const List = mongoose.model('list', listSchema)
