@@ -47,6 +47,7 @@ export default class Login extends Component {
     return (
       <div>
         <form onSubmit={this.handleSubmit}>
+          <div className="email">
           <input
             type="email"
             name="email"
@@ -55,7 +56,8 @@ export default class Login extends Component {
             onChange={this.handleChange}
             required
           />
-
+          </div>
+          <div className="email">
           <input
             type="password"
             name="password"
@@ -64,8 +66,10 @@ export default class Login extends Component {
             onChange={this.handleChange}
             required
           />
-
-          <button type="submit">Login</button>
+          </div>
+          <div className="createAccount">
+              <button type="submit">Login</button>
+          </div>
         </form>
       </div>
     );

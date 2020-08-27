@@ -52,6 +52,8 @@ export default class Registration extends Component {
     return (
       <div>
         <form onSubmit={this.handleSubmit}>
+        <div className="email">
+          <label htmlFor="email">Email</label>
           <input
             type="email"
             name="email"
@@ -60,6 +62,9 @@ export default class Registration extends Component {
             onChange={this.handleChange}
             required
           />
+        </div>
+        <div className="firstName">
+        <label htmlFor="firstName">First Name</label>
           <input
             type="firstName"
             name="firstName"
@@ -68,6 +73,9 @@ export default class Registration extends Component {
             onChange={this.handleChange}
             required
           />
+        </div>
+        <div className="lastName">
+          <label htmlFor="lastName">Last Name</label>
           <input
             type="lastName"
             name="lastName"
@@ -76,7 +84,9 @@ export default class Registration extends Component {
             onChange={this.handleChange}
             required
           />
-
+        </div>
+        <div className="password">
+          <label htmlFor="password">Password</label>
           <input
             type="password"
             name="password"
@@ -85,7 +95,11 @@ export default class Registration extends Component {
             onChange={this.handleChange}
             required
           />
-          <button type="submit">Register</button>
+        </div>
+        <div className="createAccount">
+              <button type="submit">Create Account</button>
+              <small>Already Have an Account?</small>
+        </div>
         </form>
       </div>
     );

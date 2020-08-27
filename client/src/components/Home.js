@@ -32,12 +32,15 @@ export default class Home extends Component {
   render() {
     return (
       <div className="wrapper">
-        <h1>Sign Up | Login</h1>
-        { this.props.loggedInStatus === 'LOGGED_IN' && 
-        <button onClick={() => this.handleLogoutClick()}>Logout</button>
-        }
-        <Registration handleSuccessfulAuth={this.handleSuccessfulAuth} />
-        <Login handleSuccessfulAuth={this.handleSuccessfulAuth} />
+        <h1 className="product-title"> The Dalal Street </h1>
+        <div className="form-wrapper">
+        {/* <h1 className="login-dialog-title">Sign Up | Login</h1> */}
+          { this.props.loggedInStatus === 'LOGGED_IN' && 
+            <button onClick={() => this.handleLogoutClick()}>Logout</button>
+          }
+          <Registration handleSuccessfulAuth={this.handleSuccessfulAuth} />
+          <Login handleSuccessfulAuth={this.handleSuccessfulAuth} />
+        </div>
       </div>
     );
   }
