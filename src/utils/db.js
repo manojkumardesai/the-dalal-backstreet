@@ -3,7 +3,7 @@ import options from '../config'
 
 export const connect = (url = options.dbUrl, opts = {}) => {
   return mongoose.connect(
-    url,
+    process.env.MONGODB_URI || url,
     { ...opts, useNewUrlParser: true }
   )
 }
