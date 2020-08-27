@@ -11,7 +11,8 @@ export default class App extends Component {
 
     this.state = {
       loggedInStatus: "NOT_LOGGED_IN",
-      user: {}
+      user: {},
+      token: ''
     };
 
     this.handleLogin = this.handleLogin.bind(this);
@@ -88,6 +89,7 @@ export default class App extends Component {
                 <Dashboard
                   {...props}
                   loggedInStatus={this.state.loggedInStatus}
+                  token={this.state.token}
                 />
               )}
             />
