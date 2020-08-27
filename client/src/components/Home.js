@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import axios from "axios";
+// import axios from "axios";
 
 import Registration from "./auth/Registration";
 import Login from "./auth/Login";
@@ -18,14 +18,14 @@ export default class Home extends Component {
   }
 
   handleLogoutClick() {
-    axios
-      .delete("http://localhost:3001/logout", { withCredentials: true })
-      .then(response => {
+    // axios
+      // .delete("http://localhost:3001/logout", { withCredentials: true })
+      // .then(response => {
         this.props.handleLogout();
-      })
-      .catch(error => {
-        console.log("logout error", error);
-      });
+      // })
+      // .catch(error => {
+      //   console.log("logout error", error);
+      // });
   }
 
   render() {
