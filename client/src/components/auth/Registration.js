@@ -10,7 +10,6 @@ export default class Registration extends Component {
       firstName: "",
       lastName: "",
       password: "",
-      password_confirmation: "",
       registrationErrors: ""
     };
 
@@ -44,6 +43,7 @@ export default class Registration extends Component {
       })
       .catch(error => {
         console.log("registration error", error);
+        this.setState({registrationErrors: error.response.data.error});
       });
     event.preventDefault();
   }
@@ -51,6 +51,10 @@ export default class Registration extends Component {
   render() {
     return (
       <div>
+        {
+          this.state.registrationErrors && 
+          <span className="errorMessage">{this.state.registrationErrors.toUpperCase()}</span>
+        }
         <form onSubmit={this.handleSubmit}>
         <div className="email">
           <label htmlFor="email">Email</label>
