@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import axios from "axios";
 
-import Home from "./components/Home";
-import Dashboard from "./components/Dashboard";
+import Home from "./Home";
+import Dashboard from "./Dashboard";
 
 export default class App extends Component {
   constructor() {
@@ -20,7 +20,7 @@ export default class App extends Component {
 
   checkLoginStatus() {
     axios
-      .get("http://localhost:3001/logged_in")
+      .get("http://localhost:3001/logged_in", { withCredentials: true })
       .then(response => {
         if (
           response.data.logged_in &&
@@ -59,8 +59,7 @@ export default class App extends Component {
   handleLogin(data) {
     this.setState({
       loggedInStatus: "LOGGED_IN",
-      user: data.user,
-      token: data.token
+      user: data.user
     });
   }
 

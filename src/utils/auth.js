@@ -22,9 +22,10 @@ export const signup = async (req, res) => {
   }
 
   try {
+    req.body.worth = 2500;
     const user = await User.create(req.body)
     const token = newToken(user)
-    return res.status(201).send({ token })
+    return res.send({ token: token, user: user })
   } catch (e) {
     console.log('err:', e);
     return res.status(500).send({error: 'duplicate email', e})
