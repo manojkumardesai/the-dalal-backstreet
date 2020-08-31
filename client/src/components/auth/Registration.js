@@ -34,6 +34,8 @@ export default class Registration extends Component {
           password: password,
           firstName,
           lastName
+        }, {
+          withCredentials: true
         }
       )
       .then(response => {

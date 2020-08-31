@@ -30,6 +30,8 @@ export default class Login extends Component {
         {
             email: email,
             password: password
+        }, {
+          withCredentials: true
         }
       )
       .then(response => {
