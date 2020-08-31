@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import './Dashboard.css';
 import axios from "axios";
-
+import Chat from './chat/Chat';
+import Join from './chat/Join';
 export default class Dashboard extends Component {
 
   state = {
@@ -39,7 +40,7 @@ export default class Dashboard extends Component {
                 <div className="col-1">
                   <ul>
                     {this.state.stockList && this.state.stockList.map(stock => {
-                      return <li> {stock.stockName} </li>
+                      return <li key={stock.stockSymbol}> {stock.stockName} </li>
                     })}
                   </ul>
                 </div>
@@ -48,7 +49,8 @@ export default class Dashboard extends Component {
                     <p>Buy/Sell Logics</p>
                 </div>
                 <div className="col-1">
-                    <p>Chat Room</p>
+                    <Chat />
+                    <Join />
                 </div>
             </div>
             
