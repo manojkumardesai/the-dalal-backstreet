@@ -8,8 +8,12 @@ import { connect } from './utils/db'
 import userRouter from './resources/user/user.router'
 import itemRouter from './resources/item/item.router'
 import listRouter from './resources/list/list.router'
+import socketio from 'socket.io';
+import http from 'http';
 
 export const app = express()
+let server;
+let io;
 
 app.disable('x-powered-by')
 
@@ -33,10 +37,18 @@ if (process.env.NODE_ENV === 'production') {
 export const start = async () => {
   try {
     await connect()
-    app.listen(config.port, () => {
-      console.log(`REST API on http://localhost:${config.port}/api`)
+    server = app.listen(config.port, () => {
+      console.log(`REST API on http://localhost:${config.port}/api`);
+      io = socketio(server);
     })
   } catch (e) {
     console.error(e)
   }
 }
+
+io.on('connection', (socket) => {
+  console.log('We have a new connection');
+  socket.on('disconnect', () => {
+    console.log('user left the chat');
+  });
+});
