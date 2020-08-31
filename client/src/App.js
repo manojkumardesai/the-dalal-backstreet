@@ -21,7 +21,7 @@ export default class App extends Component {
 
   checkLoginStatus() {
     axios
-      .get("http://localhost:3001/logged_in")
+      .get("/logged_in")
       .then(response => {
         if (
           response.data.logged_in &&
