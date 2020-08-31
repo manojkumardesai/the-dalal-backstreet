@@ -25,3 +25,7 @@ body {
     display: grid;
     justify-items: center;
 }
+
+html, body, #app, #app>div {
+    height: 100%
+  }
