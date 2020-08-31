@@ -20,25 +20,17 @@ export default class App extends Component {
   }
 
   checkLoginStatus() {
+    const token = sessionStorage.getItem('token');
     axios
-      .get("/logged_in")
+      .get("http://localhost:3001/api/user/", {
+        headers: {
+          Authorization: 'Bearer ' + token //the token is a variable which holds the token
+        }
+      })
       .then(response => {
-        if (
-          response.data.logged_in &&
-          this.state.loggedInStatus === "NOT_LOGGED_IN"
-        ) {
-          this.setState({
-            loggedInStatus: "LOGGED_IN",
-            user: response.data.user
-          });
-        } else if (
-          !response.data.logged_in &
-          (this.state.loggedInStatus === "LOGGED_IN")
-        ) {
-          this.setState({
-            loggedInStatus: "NOT_LOGGED_IN",
-            user: {}
-          });
+        if (response.data) {
+          response.data.token = token;
+          this.handleLogin(response.data);
         }
       })
       .catch(error => {
@@ -63,6 +55,7 @@ export default class App extends Component {
       user: data.user,
       token: data.token
     });
+    sessionStorage.setItem('token', data.token);
   }
 
   render() {
