@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import './Dashboard.css';
 import axios from "axios";
-import Chat from './chat/Chat';
-import Join from './chat/Join';
+import Join from './join/Join';
 export default class Dashboard extends Component {
 
   state = {
@@ -49,7 +48,6 @@ export default class Dashboard extends Component {
                     <p>Buy/Sell Logics</p>
                 </div>
                 <div className="col-1">
-                    <Chat />
                     <Join />
                 </div>
             </div>
