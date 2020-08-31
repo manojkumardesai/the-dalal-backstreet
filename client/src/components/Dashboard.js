@@ -14,7 +14,7 @@ export default class Dashboard extends Component {
 
   fetchStocks() {
     axios
-      .get("/api/list/", {
+      .get("http://localhost:3001/api/list/", {
         headers: {
           Authorization: 'Bearer ' + this.props.token //the token is a variable which holds the token
         }

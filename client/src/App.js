@@ -21,7 +21,8 @@ export default class App extends Component {
 
   checkLoginStatus() {
     const token = sessionStorage.getItem('token');
-    axios
+    if (token) {
+      axios
       .get("http://localhost:3001/api/user/", {
         headers: {
           Authorization: 'Bearer ' + token //the token is a variable which holds the token
@@ -36,6 +37,7 @@ export default class App extends Component {
       .catch(error => {
         console.log("check login error", error);
       });
+    }
   }
 
   componentDidMount() {
@@ -47,6 +49,7 @@ export default class App extends Component {
       loggedInStatus: "NOT_LOGGED_IN",
       user: {}
     });
+    sessionStorage.removeItem('token');
   }
 
   handleLogin(data) {
