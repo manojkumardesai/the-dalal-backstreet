@@ -44,6 +44,11 @@ export default class Dashboard extends Component {
         console.log("logout error", error);
       });
   }
+  toggleView = () => {
+    this.setState({
+      chatView: false
+    });
+  }
 
   render() {
     return (
@@ -65,7 +70,7 @@ export default class Dashboard extends Component {
                     <p>Buy/Sell Logics</p>
                 </div>
                 <div className="col-1">
-                    { this.state.chatView ? <Chat location={this.state.location} /> :
+                    { this.state.chatView ? <Chat location={this.state.location} onExit={this.toggleView} /> :
                       <Join handleClick={this.intiateChatSession}/>
                     }
                 </div>

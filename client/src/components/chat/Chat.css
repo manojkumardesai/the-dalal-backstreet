@@ -2,8 +2,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    background-color: #1A1A1D;
+    height: 100%;
   }
   
   .chatContainer {
@@ -12,8 +11,8 @@
     justify-content: space-between;
     background: #FFFFFF;
     border-radius: 8px;
-    height: 60%;
-    width: 85%;
+    height: 100%;
+    width: 100%;
   }
   
   @media (min-width: 320px) and (max-width: 480px) {
