@@ -4,6 +4,7 @@ import axios from "axios";
 
 import Home from "./components/Home";
 import Dashboard from "./components/Dashboard";
+import Chat from "./components/chat/Chat";
 
 export default class App extends Component {
   constructor() {
@@ -20,30 +21,24 @@ export default class App extends Component {
   }
 
   checkLoginStatus() {
-    axios
-      .get("/logged_in")
+    const token = sessionStorage.getItem('token');
+    if (token) {
+      axios
+      .get("http://localhost:3001/api/user/", {
+        headers: {
+          Authorization: 'Bearer ' + token //the token is a variable which holds the token
+        }
+      })
       .then(response => {
-        if (
-          response.data.logged_in &&
-          this.state.loggedInStatus === "NOT_LOGGED_IN"
-        ) {
-          this.setState({
-            loggedInStatus: "LOGGED_IN",
-            user: response.data.user
-          });
-        } else if (
-          !response.data.logged_in &
-          (this.state.loggedInStatus === "LOGGED_IN")
-        ) {
-          this.setState({
-            loggedInStatus: "NOT_LOGGED_IN",
-            user: {}
-          });
+        if (response.data) {
+          response.data.token = token;
+          this.handleLogin(response.data);
         }
       })
       .catch(error => {
         console.log("check login error", error);
       });
+    }
   }
 
   componentDidMount() {
@@ -55,6 +50,7 @@ export default class App extends Component {
       loggedInStatus: "NOT_LOGGED_IN",
       user: {}
     });
+    sessionStorage.removeItem('token');
   }
 
   handleLogin(data) {
@@ -63,6 +59,7 @@ export default class App extends Component {
       user: data.user,
       token: data.token
     });
+    sessionStorage.setItem('token', data.token);
   }
 
   render() {
@@ -92,6 +89,10 @@ export default class App extends Component {
                   token={this.state.token}
                 />
               )}
+            />
+            <Route 
+              path="/chat"
+              component={Chat}
             />
           </Switch>
         </BrowserRouter>

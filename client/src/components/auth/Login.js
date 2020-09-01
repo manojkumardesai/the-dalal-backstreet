@@ -26,12 +26,10 @@ export default class Login extends Component {
 
     axios
       .post(
-        "/signin",
+        "http://localhost:3001/signin",
         {
             email: email,
             password: password
-        }, {
-          withCredentials: true
         }
       )
       .then(response => {

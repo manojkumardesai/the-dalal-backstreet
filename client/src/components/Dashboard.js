@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import './Dashboard.css';
 import axios from "axios";
-
+import Join from './join/Join';
 export default class Dashboard extends Component {
 
   state = {
@@ -14,7 +14,7 @@ export default class Dashboard extends Component {
 
   fetchStocks() {
     axios
-      .get("/api/list/", {
+      .get("http://localhost:3001/api/list/", {
         headers: {
           Authorization: 'Bearer ' + this.props.token //the token is a variable which holds the token
         }
@@ -39,7 +39,7 @@ export default class Dashboard extends Component {
                 <div className="col-1">
                   <ul>
                     {this.state.stockList && this.state.stockList.map(stock => {
-                      return <li> {stock.stockName} </li>
+                      return <li key={stock.stockSymbol}> {stock.stockName} </li>
                     })}
                   </ul>
                 </div>
@@ -48,7 +48,7 @@ export default class Dashboard extends Component {
                     <p>Buy/Sell Logics</p>
                 </div>
                 <div className="col-1">
-                    <p>Chat Room</p>
+                    <Join />
                 </div>
             </div>
             
