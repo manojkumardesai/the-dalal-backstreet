@@ -20,7 +20,7 @@ const Chat = ({ location }) => {
   const ENDPOINT = 'https://project-chat-application.herokuapp.com/';
 
   useEffect(() => {
-    const { name, room } = queryString.parse(location.search);
+    const { name, room } = location;
 
     socket = io(ENDPOINT);
 
@@ -32,7 +32,7 @@ const Chat = ({ location }) => {
         alert(error);
       }
     });
-  }, [ENDPOINT, location.search]);
+  }, [location]);
   
   useEffect(() => {
     socket.on('message', message => {

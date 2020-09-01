@@ -2,18 +2,32 @@ import React, { Component } from "react";
 import './Dashboard.css';
 import axios from "axios";
 import Join from './join/Join';
+import Chat from './chat/Chat';
 import FilteredList from './game/StockList';
 
 export default class Dashboard extends Component {
 
   state = {
-    test: 'hello'
+    test: 'hello',
+    chatView: false,
+    location: {}
   }
 
   componentDidMount() {
     this.fetchStocks();
   }
-
+  intiateChatSession = (name, room) => {
+    if (name && room) {
+      this.setState({
+        chatView: true,
+        location: {
+          name, room
+        }
+      })
+    } else {
+      return;
+    }
+  }
   fetchStocks() {
     axios
       .get("http://localhost:3001/api/list/", {
@@ -51,7 +65,9 @@ export default class Dashboard extends Component {
                     <p>Buy/Sell Logics</p>
                 </div>
                 <div className="col-1">
-                    <Join />
+                    { this.state.chatView ? <Chat location={this.state.location} /> :
+                      <Join handleClick={this.intiateChatSession}/>
+                    }
                 </div>
             </div>
             
