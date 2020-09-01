@@ -3,7 +3,7 @@ import './Dashboard.css';
 import axios from "axios";
 import Join from './join/Join';
 import Chat from './chat/Chat';
-import FilteredList from './game/StockList';
+import StockList from './game/StockList';
 
 export default class Dashboard extends Component {
 
@@ -58,7 +58,7 @@ export default class Dashboard extends Component {
             
             <div className="columns">
                 <div className="col-1">
-                  <FilteredList />
+                  <StockList stockList={this.state.stockList} />
                   {/* <ul>
                     {this.state.stockList && this.state.stockList.map(stock => {
                       return <li key={stock.stockSymbol}> {stock.stockName} </li>
