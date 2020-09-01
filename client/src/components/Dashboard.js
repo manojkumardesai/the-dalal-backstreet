@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import './Dashboard.css';
 import axios from "axios";
 import Join from './join/Join';
+import FilteredList from './game/StockList';
+
 export default class Dashboard extends Component {
 
   state = {
@@ -37,11 +39,12 @@ export default class Dashboard extends Component {
             
             <div className="columns">
                 <div className="col-1">
-                  <ul>
+                  <FilteredList />
+                  {/* <ul>
                     {this.state.stockList && this.state.stockList.map(stock => {
                       return <li key={stock.stockSymbol}> {stock.stockName} </li>
                     })}
-                  </ul>
+                  </ul> */}
                 </div>
                 <div className="col-2">
                     <h2>User Information / Stock Information</h2>
