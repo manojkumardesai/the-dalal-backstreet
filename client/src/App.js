@@ -4,6 +4,7 @@ import axios from "axios";
 
 import Home from "./components/Home";
 import Dashboard from "./components/Dashboard";
+import Chat from "./components/chat/Chat";
 
 export default class App extends Component {
   constructor() {
@@ -88,6 +89,10 @@ export default class App extends Component {
                   token={this.state.token}
                 />
               )}
+            />
+            <Route 
+              path="/chat"
+              component={Chat}
             />
           </Switch>
         </BrowserRouter>
