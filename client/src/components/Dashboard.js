@@ -2,16 +2,32 @@ import React, { Component } from "react";
 import './Dashboard.css';
 import axios from "axios";
 import Join from './join/Join';
+import Chat from './chat/Chat';
+import FilteredList from './game/StockList';
+
 export default class Dashboard extends Component {
 
   state = {
-    test: 'hello'
+    test: 'hello',
+    chatView: false,
+    location: {}
   }
 
   componentDidMount() {
     this.fetchStocks();
   }
-
+  intiateChatSession = (name, room) => {
+    if (name && room) {
+      this.setState({
+        chatView: true,
+        location: {
+          name, room
+        }
+      })
+    } else {
+      return;
+    }
+  }
   fetchStocks() {
     axios
       .get("http://localhost:3001/api/list/", {
@@ -28,6 +44,11 @@ export default class Dashboard extends Component {
         console.log("logout error", error);
       });
   }
+  toggleView = () => {
+    this.setState({
+      chatView: false
+    });
+  }
 
   render() {
     return (
@@ -37,18 +58,21 @@ export default class Dashboard extends Component {
             
             <div className="columns">
                 <div className="col-1">
-                  <ul>
+                  <FilteredList />
+                  {/* <ul>
                     {this.state.stockList && this.state.stockList.map(stock => {
                       return <li key={stock.stockSymbol}> {stock.stockName} </li>
                     })}
-                  </ul>
+                  </ul> */}
                 </div>
                 <div className="col-2">
                     <h2>User Information / Stock Information</h2>
                     <p>Buy/Sell Logics</p>
                 </div>
                 <div className="col-1">
-                    <Join />
+                    { this.state.chatView ? <Chat location={this.state.location} onExit={this.toggleView} /> :
+                      <Join handleClick={this.intiateChatSession}/>
+                    }
                 </div>
             </div>
             
