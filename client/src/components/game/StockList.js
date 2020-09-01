@@ -1,4 +1,5 @@
 import React from 'react';
+import './StockList.css';
 
 export default class StockList extends React.Component {
 	
@@ -75,7 +76,11 @@ class List extends React.Component {
     return (
       <ul>
       {this.props.items.map(function(item) {
-				return <li key={item.stockName}>{item.stockName}</li>
+           return <li>
+           <img className='stockImage' src="../assets/images/bg_welcome.jpg" alt="img"/>   
+           <span>{item.stockName}</span>
+           <span className="phone">{item.stockSymbol}</span>
+         </li>  
 			})}
       </ul>
     );  

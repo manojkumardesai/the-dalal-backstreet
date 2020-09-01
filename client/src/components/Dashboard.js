@@ -16,6 +16,12 @@ export default class Dashboard extends Component {
   componentDidMount() {
     this.fetchStocks();
   }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.token !== this.props.token) {
+      this.fetchStocks();
+    }
+  }
   intiateChatSession = (name, room) => {
     if (name && room) {
       this.setState({
@@ -29,20 +35,22 @@ export default class Dashboard extends Component {
     }
   }
   fetchStocks() {
-    axios
-      .get("http://localhost:3001/api/list/", {
-        headers: {
-          Authorization: 'Bearer ' + this.props.token //the token is a variable which holds the token
-        }
-       })
-      .then(({data}) => {
-        this.setState({
-          stockList: data.data
+    if (this.props.token) {
+      axios
+        .get("http://localhost:3001/api/list/", {
+          headers: {
+            Authorization: 'Bearer ' + this.props.token //the token is a variable which holds the token
+          }
+         })
+        .then(({data}) => {
+          this.setState({
+            stockList: data.data
+          });
+        })
+        .catch(error => {
+          console.log("logout error", error);
         });
-      })
-      .catch(error => {
-        console.log("logout error", error);
-      });
+    }
   }
   toggleView = () => {
     this.setState({
@@ -53,8 +61,7 @@ export default class Dashboard extends Component {
   render() {
     return (
       <div className="container">
-            <h1>The Dalal Street  </h1>
-            <img src="" alt=""/>
+            <h1>The Dalal Street</h1>
             
             <div className="columns">
                 <div className="col-1">
