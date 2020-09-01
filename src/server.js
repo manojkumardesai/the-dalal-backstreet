@@ -66,6 +66,7 @@ export const start = async () => {
         });
       
         socket.on('disconnect', () => {
+          console.log('kajsdkajhkajsd');
           const user = removeUser(socket.id);
       
           if(user) {
