@@ -3,7 +3,7 @@ import './Dashboard.css';
 import axios from "axios";
 import Join from './join/Join';
 import Chat from './chat/Chat';
-import FilteredList from './game/StockList';
+import StockList from './game/StockList';
 
 export default class Dashboard extends Component {
 
@@ -15,6 +15,12 @@ export default class Dashboard extends Component {
 
   componentDidMount() {
     this.fetchStocks();
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.token !== this.props.token) {
+      this.fetchStocks();
+    }
   }
   intiateChatSession = (name, room) => {
     if (name && room) {
@@ -29,20 +35,22 @@ export default class Dashboard extends Component {
     }
   }
   fetchStocks() {
-    axios
-      .get("http://localhost:3001/api/list/", {
-        headers: {
-          Authorization: 'Bearer ' + this.props.token //the token is a variable which holds the token
-        }
-       })
-      .then(({data}) => {
-        this.setState({
-          stockList: data.data
+    if (this.props.token) {
+      axios
+        .get("http://localhost:3001/api/list/", {
+          headers: {
+            Authorization: 'Bearer ' + this.props.token //the token is a variable which holds the token
+          }
+         })
+        .then(({data}) => {
+          this.setState({
+            stockList: data.data
+          });
+        })
+        .catch(error => {
+          console.log("logout error", error);
         });
-      })
-      .catch(error => {
-        console.log("logout error", error);
-      });
+    }
   }
   toggleView = () => {
     this.setState({
@@ -53,12 +61,11 @@ export default class Dashboard extends Component {
   render() {
     return (
       <div className="container">
-            <h1>The Dalal Street  </h1>
-            <img src="" alt=""/>
+            <h1>The Dalal Street</h1>
             
             <div className="columns">
                 <div className="col-1">
-                  <FilteredList />
+                  <StockList stockList={this.state.stockList} />
                   {/* <ul>
                     {this.state.stockList && this.state.stockList.map(stock => {
                       return <li key={stock.stockSymbol}> {stock.stockName} </li>

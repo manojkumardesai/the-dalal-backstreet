@@ -35,9 +35,9 @@ export default class Home extends Component {
         <h1 className="product-title"> The Dalal Street </h1>
         <div className="form-wrapper">
         {/* <h1 className="login-dialog-title">Sign Up | Login</h1> */}
-          { this.props.loggedInStatus === 'LOGGED_IN' && 
+          {/* { this.props.loggedInStatus === 'LOGGED_IN' && 
             <button onClick={() => this.handleLogoutClick()}>Logout</button>
-          }
+          } */}
           <Registration handleSuccessfulAuth={this.handleSuccessfulAuth} />
           <Login handleSuccessfulAuth={this.handleSuccessfulAuth} />
         </div>

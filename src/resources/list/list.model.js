@@ -12,6 +12,11 @@ const listSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
+    stockImage: {
+      type: String,
+      required: true,
+      trim: true,
+    },
     cmp: {
       type: Number,
       required: true,
