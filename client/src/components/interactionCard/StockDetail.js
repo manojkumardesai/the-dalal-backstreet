@@ -70,8 +70,10 @@ export default class StockDetail extends React.Component {
             <h4>Available Qty: {stock.qtyAvailable}</h4>
             <h4>Current Price: {stock.cmp}</h4>
             <input placeholder="Enter quantity to trade" onChange={this.handlyQtyChange}></input>
+            <div>
             <button disabled={!this.isEligibleToBuy()} onClick={this.buyStock}>Buy</button>
-            <button disabled={!this.isEligibleToSell()} onClick={this.sellStock}>Sell</button>
+            <button disabled={!this.isEligibleToSell()} onClick={this.sellStock}>Sell</button> 
+            </div>
         </div>
         </div>
 
