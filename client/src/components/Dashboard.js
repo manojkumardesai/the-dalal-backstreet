@@ -245,6 +245,9 @@ export default class Dashboard extends Component {
                         {this.state.userStocks.map(data => (
                           <h3>{data.qty} {data.stockName} stock worth {data.avgPrice}$</h3>
                         ))}
+                        {
+                        !this.state.userStocks.length ? <div> You have 2500$, feel free to buy some stocks </div> : null
+                        }
                       </div> : null
                     }
                 </div>
