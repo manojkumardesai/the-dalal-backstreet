@@ -59,7 +59,7 @@ class List extends React.Component {
       <ul>
       {this.props.items.map((item) => {
            return <li key={item.stockName} onClick={() => this.props.stockSelected(item)}>
-           <img className='stockImage' src="../assets/images/bg_welcome.jpg" alt="img"/>   
+           {/* <img className='stockImage' src="../assets/images/bg_welcome.jpg" alt="img"/>    */}
            <span>{item.stockName}</span>
            <span className="phone">{item.cmp}</span>
          </li>  
