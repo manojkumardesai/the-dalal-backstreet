@@ -5,9 +5,10 @@ export const me = (req, res) => {
 }
 
 export const updateMe = async (req, res) => {
+  console.log('data:', req.user);
   try {
     const user = await User.findByIdAndUpdate(req.user._id, req.body, {
-      new: true
+      new: true,
     })
       .lean()
       .exec()

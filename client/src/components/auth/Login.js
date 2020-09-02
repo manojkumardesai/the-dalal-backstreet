@@ -34,6 +34,7 @@ export default class Login extends Component {
       )
       .then(response => {
         if (response.data.token) {
+          response.data.data = response.data.user;
           this.props.handleSuccessfulAuth(response.data);
         }
       })

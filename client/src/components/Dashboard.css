@@ -45,6 +45,8 @@ img {
 
 .col-1 {
     width: 20%;
+    height: 70vh;
+    overflow-y: auto;
 }
 
 .col-2 {
@@ -59,6 +61,16 @@ img {
     background: #212614;
     color: #fff;
     padding: 1em;
+}
+
+.userInfo {
+    height: max-content;
+}
+
+.interactionBoard {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 @media (max-width: 600px) {

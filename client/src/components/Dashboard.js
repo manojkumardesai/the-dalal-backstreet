@@ -4,13 +4,16 @@ import axios from "axios";
 import Join from './join/Join';
 import Chat from './chat/Chat';
 import StockList from './game/StockList';
+import StockDetail from './interactionCard/StockDetail';
 
 export default class Dashboard extends Component {
 
   state = {
     test: 'hello',
     chatView: false,
-    location: {}
+    location: {},
+    interactionView: 'default',
+    selectedStock: {}
   }
 
   componentDidMount() {
@@ -34,7 +37,7 @@ export default class Dashboard extends Component {
       return;
     }
   }
-  fetchStocks() {
+  fetchStocks = () => {
     if (this.props.token) {
       axios
         .get("http://localhost:3001/api/list/", {
@@ -46,35 +49,196 @@ export default class Dashboard extends Component {
           this.setState({
             stockList: data.data
           });
+          this.fetchUsersStocks();
         })
         .catch(error => {
           console.log("logout error", error);
         });
     }
   }
+  fetchUsersStocks = () => {
+    if (this.props.token) {
+      axios
+        .get("http://localhost:3001/api/item/", {
+          headers: {
+            Authorization: 'Bearer ' + this.props.token //the token is a variable which holds the token
+          }
+         })
+        .then(({data}) => {
+          this.setState({
+            userStocks: data.data
+          });
+        })
+        .catch(error => {
+          console.log("logout error", error);
+        });
+    }
+  }
+
+  stockSelected = (stock) => {
+    this.setState({
+      interactionView: 'stock',
+      selectedStock: stock
+    });
+  }
+
   toggleView = () => {
     this.setState({
       chatView: false
     });
   }
 
-  render() {
+  updateStockPrice = (stockId, userTransaction) => {
+    const {stockSymbol, stockName, cmp, qtyAvailable, stockImage} = this.state.selectedStock;
+    const updatedQty = qtyAvailable - userTransaction.qty;
+    const updatedPrice =  (1 + (userTransaction.qty/qtyAvailable)) * cmp;
+    const payLoad = {
+      stockSymbol,
+      stockName,
+      cmp: updatedPrice,
+      qtyAvailable: updatedQty,
+      stockImage
+    };
+    axios
+    .put(`http://localhost:3001/api/list/${stockId}`, payLoad, {
+      headers: {
+        Authorization: 'Bearer ' + this.props.token //the token is a variable which holds the token
+      }
+     })
+    .then(({data}) => {
+      this.fetchStocks();
+      this.updateUserBalance(userTransaction, 'buy');
+      this.setState({
+        interactionView: 'notify'
+      })
+      setTimeout(() => {
+        this.setState({
+          interactionView: 'default'
+        })
+      }, 3000);
+    })
+    .catch(error => {
+      console.log("logout error", error);
+    });
+  }
+
+  updateUserBalance = (userDetails, transactionType) => {
+    const payLoad = this.props.user;
+    if (transactionType === 'buy') {
+      payLoad.worth =  payLoad.worth - (userDetails.qty * userDetails.avgPrice);
+    } else {
+      payLoad.worth =  payLoad.worth + (userDetails.qty * userDetails.avgPrice);
+    }
+    axios
+    .put(`http://localhost:3001/api/user/`, payLoad, {
+      headers: {
+        Authorization: 'Bearer ' + this.props.token //the token is a variable which holds the token
+      }
+     })
+    .then(({data}) => {
+      this.props.updateUser();
+    })
+    .catch(error => {
+      console.log("logout error", error);
+    });
+  }
+  updateSellStockPrice = (stockId, userTransaction) => {
+    const {stockSymbol, stockName, cmp, qtyAvailable, stockImage} = this.state.selectedStock;
+    const updatedQty = qtyAvailable + userTransaction.qty;
+    const updatedPrice =  (1-(userTransaction.qty/qtyAvailable)) * cmp;
+    const payLoad = {
+      stockSymbol,
+      stockName,
+      cmp: updatedPrice,
+      qtyAvailable: updatedQty,
+      stockImage
+    };
+    axios
+    .put(`http://localhost:3001/api/list/${stockId}`, payLoad, {
+      headers: {
+        Authorization: 'Bearer ' + this.props.token //the token is a variable which holds the token
+      }
+     })
+    .then(({data}) => {
+      this.fetchStocks();
+      this.setState({
+        interactionView: 'notify'
+      })
+      setTimeout(() => {
+        this.setState({
+          interactionView: 'default'
+        })
+      }, 3000);
+    })
+    .catch(error => {
+      console.log("logout error", error);
+    });
+  }
+
+  handleBuyTransaction = (payLoad) => {
+    axios
+      .put("http://localhost:3001/api/item/" + payLoad.list, payLoad, {
+        headers: {
+          Authorization: 'Bearer ' + this.props.token //the token is a variable which holds the token
+        }
+        })
+      .then(({data}) => {
+        this.updateStockPrice(payLoad.list, payLoad);
+      })
+      .catch(error => {
+        console.log("logout error", error);
+      });
+  }
+  handleSellTransaction = (payLoad) => {
+    axios
+      .put("http://localhost:3001/api/item/" + payLoad.list, payLoad, {
+        headers: {
+          Authorization: 'Bearer ' + this.props.token //the token is a variable which holds the token
+        }
+        })
+      .then(({data}) => {
+        this.updateSellStockPrice(payLoad.list, payLoad);
+      })
+      .catch(error => {
+        console.log("logout error", error);
+      });
+  }
+
+  render = () => {
     return (
-      <div className="container">
-            <h1>The Dalal Street</h1>
-            
+      <div className="container">            
             <div className="columns">
                 <div className="col-1">
-                  <StockList stockList={this.state.stockList} />
+                  <StockList 
+                    stockList={this.state.stockList} 
+                    stockSelected={this.stockSelected}
+                    selectedStockData={this.state.selectedStock}/>
                   {/* <ul>
                     {this.state.stockList && this.state.stockList.map(stock => {
                       return <li key={stock.stockSymbol}> {stock.stockName} </li>
                     })}
                   </ul> */}
                 </div>
-                <div className="col-2">
-                    <h2>User Information / Stock Information</h2>
-                    <p>Buy/Sell Logics</p>
+                <div className="col-2 interactionBoard">
+                    {this.state.interactionView === 'stock' ?
+                     <StockDetail stock={this.state.selectedStock} user={this.props.user} 
+                      userStocks = {this.state.userStocks}
+                      initiateBuy = {this.handleBuyTransaction}
+                      initiateSell = {this.handleSellTransaction}
+                    /> : null
+                    }
+                    {this.state.interactionView === 'notify' ?
+                     <div> Transaction Successfull </div>
+                    : null
+                    }
+                    {
+                      this.state.interactionView === 'default' ?
+                      <div>
+                        <h3>Welcome to</h3>
+                        <h1>The Dalal Street</h1>
+                      </div>
+                      : null
+                    }
                 </div>
                 <div className="col-1">
                     { this.state.chatView ? <Chat location={this.state.location} onExit={this.toggleView} /> :
@@ -88,7 +252,15 @@ export default class Dashboard extends Component {
                     <h2>List of Online People</h2>
                     <p></p>
                 </div>
-                <div className="col-1"><p>Current User Information</p></div>
+                <div className="col-1 userInfo">
+                  <h3>
+                    Account Information
+                  </h3>
+                  <span>Available Balance: {this.props.user.worth} $</span>
+                  <h4>
+                    {this.props.user.firstName}
+                  </h4>
+                </div>
             </div>
         </div>
     );

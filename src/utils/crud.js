@@ -1,7 +1,24 @@
 export const getOne = model => async (req, res) => {
   try {
     const doc = await model
-      .findOne({ createdBy: req.user._id, _id: req.params.id })
+      .findOne({ createdBy: req.user._id, list: req.params.id })
+      .lean()
+      .exec()
+
+    if (!doc) {
+      return res.status(400).end()
+    }
+
+    res.status(200).json({ data: doc })
+  } catch (e) {
+    console.error(e)
+    res.status(400).end()
+  }
+}
+export const getOneStock = model => async (req, res) => {
+  try {
+    const doc = await model
+      .findOne({ _id: req.params.id })
       .lean()
       .exec()
 
@@ -65,7 +82,30 @@ export const updateOne = model => async (req, res) => {
           _id: req.params.id
         },
         req.body,
-        { new: true }
+        { upsert: true, new: true }
+      )
+      .lean()
+      .exec()
+
+    if (!updatedDoc) {
+      return res.status(400).end()
+    }
+
+    res.status(200).json({ data: updatedDoc })
+  } catch (e) {
+    console.error(e)
+    res.status(400).end()
+  }
+}
+export const updateStockPrice = model => async (req, res) => {
+  try {
+    const updatedDoc = await model
+      .findOneAndUpdate(
+        {
+          _id: req.params.id
+        },
+        req.body,
+        { upsert: true, new: true }
       )
       .lean()
       .exec()
@@ -102,7 +142,9 @@ export const removeOne = model => async (req, res) => {
 export const crudControllers = model => ({
   removeOne: removeOne(model),
   updateOne: updateOne(model),
+  updateStockPrice: updateStockPrice(model),
   getMany: getMany(model),
   getOne: getOne(model),
+  getOneStock: getOneStock(model),
   createOne: createOne(model)
 })
