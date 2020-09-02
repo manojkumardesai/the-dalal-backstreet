@@ -53,9 +53,12 @@ export const signin = async (req, res) => {
     if (!match) {
       return res.status(401).send(invalid)
     }
-
+    const userDetails = await User.findOne({ email: req.body.email })
+      .lean()
+      .exec()
     const token = newToken(user)
-    return res.send({ token: token, user: user })
+    console.log(userDetails);
+    return res.send({ token: token, user: userDetails })
   } catch (e) {
     console.error(e)
     res.status(500).end()

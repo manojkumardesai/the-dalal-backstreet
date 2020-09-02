@@ -56,7 +56,7 @@ export default class App extends Component {
   handleLogin(data) {
     this.setState({
       loggedInStatus: "LOGGED_IN",
-      user: data.user,
+      user: data.data,
       token: data.token
     });
     sessionStorage.setItem('token', data.token);
@@ -86,7 +86,9 @@ export default class App extends Component {
                 <Dashboard
                   {...props}
                   loggedInStatus={this.state.loggedInStatus}
+                  user={this.state.user}
                   token={this.state.token}
+                  updateUser={this.checkLoginStatus}
                 />
               )}
             />

@@ -8,11 +8,11 @@ const itemSchema = new mongoose.Schema(
     },
     avgPrice: {
       type: Number,
-      required: true,
     },
-    currentPrice: {
-      type: Number,
+    stockName: {
+      type: String,
       required: true,
+      trim: true,
     },
     createdBy: {
       type: mongoose.SchemaTypes.ObjectId,
