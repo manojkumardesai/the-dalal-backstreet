@@ -45,6 +45,8 @@ img {
 
 .col-1 {
     width: 20%;
+    height: 70vh;
+    overflow-y: auto;
 }
 
 .col-2 {

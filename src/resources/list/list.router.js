@@ -12,8 +12,8 @@ router
 // /api/list/:id
 router
   .route('/:id')
-  .get(controllers.getOne)
-  .put(controllers.updateOne)
+  .get(controllers.getOneStock)
+  .put(controllers.updateStockPrice)
   .delete(controllers.removeOne)
 
 export default router

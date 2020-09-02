@@ -9,10 +9,6 @@ const itemSchema = new mongoose.Schema(
     avgPrice: {
       type: Number,
     },
-    currentPrice: {
-      type: Number,
-      required: true,
-    },
     stockName: {
       type: String,
       required: true,

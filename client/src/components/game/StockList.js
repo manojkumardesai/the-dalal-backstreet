@@ -15,23 +15,6 @@ export default class StockList extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			initialItems: [
-				"Severian",
-				"Thecla",
-				"Dorcas",
-				"Valeria",
-				"Agia",
-				"Jonas",
-				"Jolenta",
-				"Baldanders",
-				"Talos",
-				"Burgundofara",
-				"Ouen",
-				"Tzadkiel",
-				"Apu Punchau",
-				"Vodalus",
-				"Typhon"
-			],
 			items: []
 		};
 	}
@@ -39,6 +22,13 @@ export default class StockList extends React.Component {
     componentDidUpdate(prevProps, prevState) {
         if (this.props.stockList && prevState.items.length !== this.props.stockList.length) {
             this.setState({items: this.props.stockList});
+        }
+        if (prevProps.stockList && prevProps.selectedStockData) {
+            const prevStockDetails = prevProps.stockList.filter(stk => stk.stockName === prevProps.selectedStockData.stockName)[0];
+            const updatedStockDetails = this.props.stockList.filter(stk => stk.stockName === this.props.selectedStockData.stockName)[0];
+            if (prevStockDetails && prevStockDetails.cmp !== updatedStockDetails.cmp) {
+                this.setState({items: this.props.stockList});
+            }
         }
     }
 	
