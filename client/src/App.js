@@ -24,7 +24,7 @@ export default class App extends Component {
     const token = sessionStorage.getItem('token');
     if (token) {
       axios
-      .get("http://localhost:3001/api/user/", {
+      .get("/api/user/", {
         headers: {
           Authorization: 'Bearer ' + token //the token is a variable which holds the token
         }

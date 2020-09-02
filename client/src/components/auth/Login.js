@@ -26,7 +26,7 @@ export default class Login extends Component {
 
     axios
       .post(
-        "http://localhost:3001/signin",
+        "/signin",
         {
             email: email,
             password: password
