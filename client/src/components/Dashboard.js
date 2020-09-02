@@ -4,13 +4,16 @@ import axios from "axios";
 import Join from './join/Join';
 import Chat from './chat/Chat';
 import StockList from './game/StockList';
+import StockDetail from './interactionCard/StockDetail';
 
 export default class Dashboard extends Component {
 
   state = {
     test: 'hello',
     chatView: false,
-    location: {}
+    location: {},
+    interactionView: 'default',
+    selectedStock: {}
   }
 
   componentDidMount() {
@@ -52,20 +55,28 @@ export default class Dashboard extends Component {
         });
     }
   }
+
+  stockSelected = (stock) => {
+    this.setState({
+      interactionView: 'stock',
+      selectedStock: stock
+    });
+  }
+
   toggleView = () => {
     this.setState({
       chatView: false
     });
   }
 
-  render() {
+  render = () => {
     return (
       <div className="container">
             <h1>The Dalal Street</h1>
             
             <div className="columns">
                 <div className="col-1">
-                  <StockList stockList={this.state.stockList} />
+                  <StockList stockList={this.state.stockList} stockSelected={this.stockSelected}/>
                   {/* <ul>
                     {this.state.stockList && this.state.stockList.map(stock => {
                       return <li key={stock.stockSymbol}> {stock.stockName} </li>
@@ -73,8 +84,10 @@ export default class Dashboard extends Component {
                   </ul> */}
                 </div>
                 <div className="col-2">
-                    <h2>User Information / Stock Information</h2>
-                    <p>Buy/Sell Logics</p>
+                    {this.state.interactionView === 'stock' ?
+                     <StockDetail stock={this.state.selectedStock} user={this.props.user}/> :
+                     <div> Coming Soon... </div>
+                    }
                 </div>
                 <div className="col-1">
                     { this.state.chatView ? <Chat location={this.state.location} onExit={this.toggleView} /> :

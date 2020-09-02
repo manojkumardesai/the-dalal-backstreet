@@ -35,9 +35,6 @@ export default class StockList extends React.Component {
 			items: []
 		};
 	}
-	
-	componentWillMount() {
-    }
     
     componentDidUpdate(prevProps, prevState) {
         if (this.props.stockList && prevState.items.length !== this.props.stockList.length) {
@@ -60,7 +57,7 @@ export default class StockList extends React.Component {
                         placeholder="Search" 
                         onChange={this.filterList.bind(this)}
                     />
-                    <List items={this.state.items} />
+                    <List items={this.state.items} stockSelected={this.props.stockSelected}/>
                 </div>
             );
         } else {
@@ -75,8 +72,8 @@ class List extends React.Component {
 	render() {
     return (
       <ul>
-      {this.props.items.map(function(item) {
-           return <li>
+      {this.props.items.map((item) => {
+           return <li key={item.stockName} onClick={() => this.props.stockSelected(item)}>
            <img className='stockImage' src="../assets/images/bg_welcome.jpg" alt="img"/>   
            <span>{item.stockName}</span>
            <span className="phone">{item.stockSymbol}</span>
