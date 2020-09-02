@@ -257,8 +257,8 @@ export default class Dashboard extends Component {
             
             <div className="columns">
                 <div className="col-3">
-                    <h2>List of Online People</h2>
-                    <p></p>
+                    <h2>Currently Playing</h2>
+                    <p>Coming Soon</p>
                 </div>
                 <div className="col-1 userInfo" onClick = {this.toggleUserView}>
                   <h3>
