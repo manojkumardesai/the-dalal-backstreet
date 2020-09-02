@@ -63,6 +63,16 @@ img {
     padding: 1em;
 }
 
+.userInfo {
+    height: max-content;
+}
+
+.interactionBoard {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 @media (max-width: 600px) {
     .columns {
         flex-direction: column;

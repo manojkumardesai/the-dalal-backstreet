@@ -37,11 +37,6 @@ export default class StockList extends React.Component {
             var listLength = this.state.items.length;
             return(
                 <div className="list-box">
-                    <h2 className="count">{listLength}
-                        {listLength > 1 || listLength === 0 ?
-                        " results" : 
-                        " result"}
-                    </h2>
                     <input
                         type="text" 
                         placeholder="Search" 
@@ -66,7 +61,7 @@ class List extends React.Component {
            return <li key={item.stockName} onClick={() => this.props.stockSelected(item)}>
            <img className='stockImage' src="../assets/images/bg_welcome.jpg" alt="img"/>   
            <span>{item.stockName}</span>
-           <span className="phone">{item.stockSymbol}</span>
+           <span className="phone">{item.cmp}</span>
          </li>  
 			})}
       </ul>

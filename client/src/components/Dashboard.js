@@ -107,6 +107,7 @@ export default class Dashboard extends Component {
      })
     .then(({data}) => {
       this.fetchStocks();
+      this.updateUserBalance(userTransaction, 'buy');
       this.setState({
         interactionView: 'notify'
       })
@@ -114,17 +115,37 @@ export default class Dashboard extends Component {
         this.setState({
           interactionView: 'default'
         })
-      }, 5000);
+      }, 3000);
     })
     .catch(error => {
       console.log("logout error", error);
     });
   }
 
+  updateUserBalance = (userDetails, transactionType) => {
+    const payLoad = this.props.user;
+    if (transactionType === 'buy') {
+      payLoad.worth =  payLoad.worth - (userDetails.qty * userDetails.avgPrice);
+    } else {
+      payLoad.worth =  payLoad.worth + (userDetails.qty * userDetails.avgPrice);
+    }
+    axios
+    .put(`http://localhost:3001/api/user/`, payLoad, {
+      headers: {
+        Authorization: 'Bearer ' + this.props.token //the token is a variable which holds the token
+      }
+     })
+    .then(({data}) => {
+      this.props.updateUser();
+    })
+    .catch(error => {
+      console.log("logout error", error);
+    });
+  }
   updateSellStockPrice = (stockId, userTransaction) => {
     const {stockSymbol, stockName, cmp, qtyAvailable, stockImage} = this.state.selectedStock;
     const updatedQty = qtyAvailable + userTransaction.qty;
-    const updatedPrice =  ((userTransaction.qty/qtyAvailable)) * cmp;
+    const updatedPrice =  (1-(userTransaction.qty/qtyAvailable)) * cmp;
     const payLoad = {
       stockSymbol,
       stockName,
@@ -147,7 +168,7 @@ export default class Dashboard extends Component {
         this.setState({
           interactionView: 'default'
         })
-      }, 5000);
+      }, 3000);
     })
     .catch(error => {
       console.log("logout error", error);
@@ -185,9 +206,7 @@ export default class Dashboard extends Component {
 
   render = () => {
     return (
-      <div className="container">
-            <h1>The Dalal Street</h1>
-            
+      <div className="container">            
             <div className="columns">
                 <div className="col-1">
                   <StockList 
@@ -200,7 +219,7 @@ export default class Dashboard extends Component {
                     })}
                   </ul> */}
                 </div>
-                <div className="col-2">
+                <div className="col-2 interactionBoard">
                     {this.state.interactionView === 'stock' ?
                      <StockDetail stock={this.state.selectedStock} user={this.props.user} 
                       userStocks = {this.state.userStocks}
@@ -211,6 +230,14 @@ export default class Dashboard extends Component {
                     {this.state.interactionView === 'notify' ?
                      <div> Transaction Successfull </div>
                     : null
+                    }
+                    {
+                      this.state.interactionView === 'default' ?
+                      <div>
+                        <h3>Welcome to</h3>
+                        <h1>The Dalal Street</h1>
+                      </div>
+                      : null
                     }
                 </div>
                 <div className="col-1">
@@ -225,7 +252,15 @@ export default class Dashboard extends Component {
                     <h2>List of Online People</h2>
                     <p></p>
                 </div>
-                <div className="col-1"><p>Current User Information</p></div>
+                <div className="col-1 userInfo">
+                  <h3>
+                    Account Information
+                  </h3>
+                  <span>Available Balance: {this.props.user.worth} $</span>
+                  <h4>
+                    {this.props.user.firstName}
+                  </h4>
+                </div>
             </div>
         </div>
     );

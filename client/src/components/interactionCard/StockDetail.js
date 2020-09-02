@@ -13,6 +13,7 @@ export default class StockDetail extends React.Component {
             totalQty = totalQty + currentHolding.qty;
             avgPrice = ((currentHolding.avgPrice * currentHolding.qty) + (this.state.qtyToBuy * stock.cmp))/ totalQty;
         }
+        avgPrice = Math.round(avgPrice);
         const payLoad = {
             qty: totalQty,
             avgPrice,
@@ -29,6 +30,8 @@ export default class StockDetail extends React.Component {
         if (currentHolding) {
             totalQty = currentHolding.qty - totalQty;
             avgPrice = ((currentHolding.avgPrice * currentHolding.qty) + (this.state.qtyToBuy * stock.cmp))/ totalQty;
+            avgPrice = Math.round(avgPrice);
+            avgPrice = avgPrice < 1 ? 1 : avgPrice;
             const payLoad = {
                 qty: totalQty,
                 avgPrice,
@@ -50,6 +53,7 @@ export default class StockDetail extends React.Component {
         const currentHolding = userStocks.filter(stk => stk.stockName === stock.stockName)[0];
         return currentHolding && currentHolding.qty > 0;
     }
+
     handlyQtyChange = (e) => {
         this.setState({
             qtyToBuy:e.target.value
@@ -58,16 +62,19 @@ export default class StockDetail extends React.Component {
     render = () => {
         const {stock} = this.props;
         return (
+            <div>
         <div>
-            <h2>
+            <h1>
                 {stock.stockName}
-            </h2>
-        <h4>Available Qty: {stock.qtyAvailable}</h4>
-        <h4>Current Price: {stock.cmp}</h4>
-        <input placeholder="Enter quantity to trade" onChange={this.handlyQtyChange}></input>
-        <button disabled={!this.isEligibleToBuy()} onClick={this.buyStock}>Buy</button>
-        <button disabled={!this.isEligibleToSell()} onClick={this.sellStock}>Sell</button>
+            </h1>
+            <h4>Available Qty: {stock.qtyAvailable}</h4>
+            <h4>Current Price: {stock.cmp}</h4>
+            <input placeholder="Enter quantity to trade" onChange={this.handlyQtyChange}></input>
+            <button disabled={!this.isEligibleToBuy()} onClick={this.buyStock}>Buy</button>
+            <button disabled={!this.isEligibleToSell()} onClick={this.sellStock}>Sell</button>
         </div>
+        </div>
+
         )
     }
 }

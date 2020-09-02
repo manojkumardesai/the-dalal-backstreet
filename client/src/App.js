@@ -88,6 +88,7 @@ export default class App extends Component {
                   loggedInStatus={this.state.loggedInStatus}
                   user={this.state.user}
                   token={this.state.token}
+                  updateUser={this.checkLoginStatus}
                 />
               )}
             />
