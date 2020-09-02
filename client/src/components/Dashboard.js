@@ -40,7 +40,7 @@ export default class Dashboard extends Component {
   fetchStocks = () => {
     if (this.props.token) {
       axios
-        .get("http://localhost:3001/api/list/", {
+        .get("/api/list/", {
           headers: {
             Authorization: 'Bearer ' + this.props.token //the token is a variable which holds the token
           }
@@ -59,7 +59,7 @@ export default class Dashboard extends Component {
   fetchUsersStocks = () => {
     if (this.props.token) {
       axios
-        .get("http://localhost:3001/api/item/", {
+        .get("/api/item/", {
           headers: {
             Authorization: 'Bearer ' + this.props.token //the token is a variable which holds the token
           }
@@ -87,6 +87,11 @@ export default class Dashboard extends Component {
       chatView: false
     });
   }
+  toggleUserView = () => {
+    this.setState({
+      interactionView: 'user'
+    });
+  }
 
   updateStockPrice = (stockId, userTransaction) => {
     const {stockSymbol, stockName, cmp, qtyAvailable, stockImage} = this.state.selectedStock;
@@ -100,7 +105,7 @@ export default class Dashboard extends Component {
       stockImage
     };
     axios
-    .put(`http://localhost:3001/api/list/${stockId}`, payLoad, {
+    .put(`/api/list/${stockId}`, payLoad, {
       headers: {
         Authorization: 'Bearer ' + this.props.token //the token is a variable which holds the token
       }
@@ -130,7 +135,7 @@ export default class Dashboard extends Component {
       payLoad.worth =  payLoad.worth + (userDetails.qty * userDetails.avgPrice);
     }
     axios
-    .put(`http://localhost:3001/api/user/`, payLoad, {
+    .put(`/api/user/`, payLoad, {
       headers: {
         Authorization: 'Bearer ' + this.props.token //the token is a variable which holds the token
       }
@@ -154,7 +159,7 @@ export default class Dashboard extends Component {
       stockImage
     };
     axios
-    .put(`http://localhost:3001/api/list/${stockId}`, payLoad, {
+    .put(`/api/list/${stockId}`, payLoad, {
       headers: {
         Authorization: 'Bearer ' + this.props.token //the token is a variable which holds the token
       }
@@ -177,7 +182,7 @@ export default class Dashboard extends Component {
 
   handleBuyTransaction = (payLoad) => {
     axios
-      .put("http://localhost:3001/api/item/" + payLoad.list, payLoad, {
+      .put("/api/item/" + payLoad.list, payLoad, {
         headers: {
           Authorization: 'Bearer ' + this.props.token //the token is a variable which holds the token
         }
@@ -191,7 +196,7 @@ export default class Dashboard extends Component {
   }
   handleSellTransaction = (payLoad) => {
     axios
-      .put("http://localhost:3001/api/item/" + payLoad.list, payLoad, {
+      .put("/api/item/" + payLoad.list, payLoad, {
         headers: {
           Authorization: 'Bearer ' + this.props.token //the token is a variable which holds the token
         }
@@ -213,11 +218,6 @@ export default class Dashboard extends Component {
                     stockList={this.state.stockList} 
                     stockSelected={this.stockSelected}
                     selectedStockData={this.state.selectedStock}/>
-                  {/* <ul>
-                    {this.state.stockList && this.state.stockList.map(stock => {
-                      return <li key={stock.stockSymbol}> {stock.stockName} </li>
-                    })}
-                  </ul> */}
                 </div>
                 <div className="col-2 interactionBoard">
                     {this.state.interactionView === 'stock' ?
@@ -239,6 +239,14 @@ export default class Dashboard extends Component {
                       </div>
                       : null
                     }
+                    {
+                      this.state.interactionView === 'user' ?
+                      <div>
+                        {this.state.userStocks.map(data => (
+                          <h3>{data.qty} {data.stockName} stock worth {data.avgPrice}$</h3>
+                        ))}
+                      </div> : null
+                    }
                 </div>
                 <div className="col-1">
                     { this.state.chatView ? <Chat location={this.state.location} onExit={this.toggleView} /> :
@@ -252,7 +260,7 @@ export default class Dashboard extends Component {
                     <h2>List of Online People</h2>
                     <p></p>
                 </div>
-                <div className="col-1 userInfo">
+                <div className="col-1 userInfo" onClick = {this.toggleUserView}>
                   <h3>
                     Account Information
                   </h3>
